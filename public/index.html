@@ -9,9 +9,12 @@
 </head>
 
 <body class="bg-neutral-20 flex flex-col justify-center items-center p-10 gap-6">
+    <progress id="progress" value="20" max="100"></progress>
+   
+
     <h1 class="text-3xl text-center font-bold flex items-center justify-between">Can you guess?...
         
-        <div class="flex justify-between items-center text-center bg-slate-500 text-white p-2 rounded-md">
+        <div id="john" class="flex justify-between items-center text-center bg-slate-500 text-white p-2 rounded-md">
             <span id="timer">0s</span>
        </div>
 
@@ -22,7 +25,7 @@
     </div>
 
 
-    <div class="flex justify-between items-center gap-80 p-6 ">
+    <div class="flex justify-between items-center gap-80 p-6 " id="btns">
         <button id="prevBtn" class="bg-slate-500 text-white  p-2 rounded-md ">Previous</button>
 
         <!-- <button class="bg-slate-500 text-white p-2 rounded-md ">Previous</button> -->

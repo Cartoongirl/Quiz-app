@@ -48,43 +48,19 @@ const quizData = [
 ];
 
 
-// const nextBtn = document.getElementById('nextBtn');
-// const questionEl = document.getElementById('question');
-
-// nextBtn.addEventListener('click', function()  {
-//     currentQuestion++;
-//     if(currentQuestion < quizData.length){
-//         questionEl.innerText = quizData[currentQuestion].question, options;
-//         renderOptions(quizData[currentQuestion].options);
-//     } else{ }
-// });
-
-// document.dispatchEvent(new CustomEvent('questionChange', {
-//     detail: {
-//         question: quizData[currentQuestion].question,
-//         options: quizData[currentQuestion].options
-//     }
-// }));
-
-
-
 let currentQuestion = 0;
 let storage = 0;
 let score = 0;
-
-
-
-
 const nextBtn = document.getElementById('nextBtn');
 const prevBtn = document.getElementById('prevBtn');
 const questionEl = document.getElementById('question');
 const optionsList = document.getElementById('options');
 const renderedQuiz = document.getElementById('rendered-quiz');
+let progress= document.getElementById("progress");
 let counter = 0;
-const timer = document.getElementById("timer");
+const timer  = document.getElementById("timer");
 let timeLeft = 10;
 let timerInterval;
-const resetBtn = document.getElementById("resetBtn");
 renderQuiz();
 
 
@@ -112,9 +88,12 @@ nextBtn.addEventListener('click', function () {
         // console.log(currentQuestion)
         renderQuiz();
 
-    }else{ renderSummary() }
+    }else{        
+        document.getElementById("john").classList.add('hidden');
+        renderSummary() 
+    }
 
-
+    updateProgressMeter()
 
 });
 
@@ -146,45 +125,42 @@ function renderSummary() {
     nextBtn.disabled = true;
     nextBtn.remove();
     prevBtn.remove();
-    clearInterval(timerInterval); // Stop the timer at the summary page
-    // the removed initialization
-    resetBtn.getElementById("resetBtn");
-    resetBtn.addEventListener('click', resetQuiz);
-
+    //timerInterval.remove();
+    // clearInterval(timerInterval); // Stop the timer at the summary page   
+//    corrected reset button code
+    const resetBtn = document.getElementById("resetBtn");
+    resetBtn.addEventListener('click', function () {
+    //   location.reload();  removing this because its reloading the page and not rerendering
+      resetQuiz();
+    });
     
 }
 
-function resetQuiz() {
+//  // the removed initialization
+//  let retakeQuiz = document.getElementById("resetBtn");
+//  retakeQuiz.addEventListener('click', resetQuiz);
+
+
+
+
+ function resetQuiz() {
     counter = 0;
     currentQuestion = 0;
     storage = 0;
     score = 0;
-    
+        
+    document.getElementById('btns').append(nextBtn);
+    nextBtn.disabled = false;
     renderQuiz();
   }
 
 
-
-
-// function renderSummary() {
-//     let elem = `
-//     <div class="card-body">
-//       <p>You answered ${store} out of ${questions.length} questions
-//     </div>
-//   `;
-//     prevBtn.disabled = true;
-//     nextBtn.disabled = true;
-  
-//     container.innerHTML = elem;
-//   }
-
-
-
-
-
-
-
-
+function updateProgressMeter(){
+    // progress.value = (currentQuestion / quizData.length) * 100;
+   let percentage=((currentQuestion +1) / quizData.length) * 100;
+    progress.value=percentage;
+    
+}
 
 
 
@@ -273,7 +249,7 @@ function checkAnswer(e) {
     if (e.currentTarget.value === myAnswer) {
         e.currentTarget.parentElement.style.backgroundColor = 'forestgreen';
         e.currentTarget.parentElement.style.color = 'white';
-        score = +1;
+        score = score +1;
         for (let myInput of myInputs) {
             myInput.disabled = true;
         }
