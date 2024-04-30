@@ -61,6 +61,7 @@ let counter = 0;
 const timer  = document.getElementById("timer");
 let timeLeft = 10;
 let timerInterval;
+let scoreHistory = [];
 renderQuiz();
 
 
@@ -95,6 +96,13 @@ nextBtn.addEventListener('click', function () {
 
     updateProgressMeter()
 
+    // Add score to history and store in browser storage
+    scoreHistory.push(score);
+    if (scoreHistory.length > 5) {
+      scoreHistory.shift(); // Keep only the latest 5 scores
+    }
+    localStorage.setItem("scoreHistory", JSON.stringify(scoreHistory))
+
 });
 
 // // backward
@@ -116,7 +124,16 @@ function renderSummary() {
         <p>Your score is ${score}</p>
     </div>
 
-    <button id="resetBtn" class="bg-slate-500 text-white p-2 rounded-md">Restart</button>    
+    <button id="resetBtn" class="bg-slate-500 text-white p-2 rounded-md">Restart</button>   
+    
+    <div class="flex flex-col justify-between items-center p-6 bg-slate-500 text-white font-semibold rounded-md ">
+        <h3>Score History - Last five attempts</h3>
+        <p>check the console</p>
+        <ul> ${scoreHistory.map((score, index) => `<li>Attempt ${index + 1} = ${score}</li>`).join('')}
+        
+        </ul>
+
+    </div>
    
     `;
    
@@ -172,13 +189,15 @@ function updateProgressMeter(){
 
 
 
+
+
 // This function will render the quiz ie the questions and options that were put in a new div
 // the innerHTML attribute was used with back ticks to allow the content of the html elements to show up (content only)
 // it was give a const which was called on.
 function renderQuiz() {
     renderedQuiz.innerHTML = `
 
-<div id="container" class="flex flex-col justify-center border-2 rounded-md bg-slate-100 w-2/5 ">
+<div id="container" class="flex flex-col justify-center border-2 rounded-md bg-slate-100 w-2/5 h-2/5">
    
 
     <h2 id="question" class="text-2xl font-semibold text-start p-6 flex justify-between items-center">
@@ -189,7 +208,7 @@ function renderQuiz() {
         </h2>
 
 
-    <div id="options" class="flex flex-col  items-center p-6 gap-10">
+    <div id="options" class="flex flex-col bg-slate- items-center p-6 gap-10">
 
         <div
             class="border-1 border-slate-500 bg-neutral-200 w-full flex items-center p-2 justify-between rounded-md">
